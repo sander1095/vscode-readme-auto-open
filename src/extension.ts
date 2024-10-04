@@ -16,6 +16,8 @@ export function activate(context: vscode.ExtensionContext) {
 
             vscode.workspace.fs.stat(readmePath).then(
                 () => {
+                    // If the readme.md file exists, open it
+                    vscode.window.showTextDocument(readmePath);
                     // Set the flag to indicate that the user has seen the readme.md
                     context.workspaceState.update('hasSeenReadme', true);
                 },
