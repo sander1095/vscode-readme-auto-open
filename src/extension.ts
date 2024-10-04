@@ -1,26 +1,34 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "readme-auto-open" is now active!');
+    console.log('Readme Auto Open: activated.');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('readme-auto-open.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Readme Auto Open!');
-	});
+    // Check if the user has already seen the readme.md on a per workspace basis
+    const hasSeenReadme = context.workspaceState.get<boolean>('hasSeenReadme', false);
 
-	context.subscriptions.push(disposable);
+    if (!hasSeenReadme) {
+        const workspaceFolder = vscode.workspace.workspaceFolders![0].uri;
+        const readmePatterns = ['readme.md', 'README.md', 'Readme.md'];
+
+        readmePatterns.forEach(readmePattern => {
+            const readmePath = vscode.Uri.joinPath(workspaceFolder, readmePattern);
+
+            vscode.workspace.fs.stat(readmePath).then(
+                () => {
+                    // If the readme.md file exists, open it
+                    vscode.commands.executeCommand('markdown.showPreview', readmePath);
+                    // Set the flag to indicate that the user has seen the readme.md
+                    context.workspaceState.update('hasSeenReadme', true);
+                },
+                () => {
+                    // If the readme.md file does not exist, do nothing
+                    console.log('readme.md file does not exist.');
+                }
+            );
+        });
+    }
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
