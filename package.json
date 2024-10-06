@@ -9,15 +9,12 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:[Rr][Ee][Aa][Dd][Mm][Ee].*"
+  ],
   "main": "./out/extension.js",
   "contributes": {
-    "commands": [
-      {
-        "command": "readme-auto-open.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+    "commands": []
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
