@@ -10,7 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "workspaceContains:readme.md"
+    "workspaceContains:[Rr][Ee][Aa][Dd][Mm][Ee].*"
   ],
   "main": "./out/extension.js",
   "contributes": {
