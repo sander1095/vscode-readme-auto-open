@@ -25,12 +25,29 @@ export async function activate(context: vscode.ExtensionContext) {
     return;
   }
 
-  await vscode.window.showTextDocument(readme);
+  const readmeCanBePreviewed = readme.fsPath.toLowerCase().endsWith('.md');
+  if (readmeCanBePreviewed) {
+    console.log('Readme Auto Open: Attempting to open README in preview mode.');
+
+    try {
+      await vscode.commands.executeCommand('markdown.showPreview', readme);
+    } catch (error) {
+      console.error('Readme Auto Open: Error opening README in preview mode. It will be opened in the editor instead', error);
+      await openReadmeInEditor(readme);
+    }
+  } else {
+    await openReadmeInEditor(readme);
+  }
 
   // Set the workspace state to indicate that the user has seen the README.
   await context.workspaceState.update(readmeStateKey, true);
 
   console.log(`Readme Auto Open: Opened ${readme.fsPath}.`);
+}
+
+async function openReadmeInEditor(readme: vscode.Uri) {
+  console.log('Readme Auto Open: Opening README in text editor.');
+  await vscode.window.showTextDocument(readme);
 }
 
 function registerResetStateCommand(context: vscode.ExtensionContext) {
