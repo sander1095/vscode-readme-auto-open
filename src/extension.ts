@@ -1,26 +1,25 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+const readmeRegex = /readme(\..*)?/i;
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "readme-auto-open" is now active!');
+export async function activate(context: vscode.ExtensionContext) {
+    console.log('Readme Auto Open: activated.');
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('readme-auto-open.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from Readme Auto Open!');
-	});
+    // We grab all the files in the root instead of using the glob-pattern to search for a README file.
+    // The reason is that glob pattern searching doesn't support support case-insensitive search, so it's easier to use a regex instead.
+    const allFilesInRootDirectory = await vscode.workspace.findFiles('*');
 
-	context.subscriptions.push(disposable);
+    const readme = allFilesInRootDirectory.find(file => file.fsPath.match(readmeRegex));
+
+    if (!readme) {
+      console.log('README was not found.');
+      return;
+    }
+
+    await vscode.window.showTextDocument(readme);
+
+    console.log(`Readme Auto Open: Opened ${readme.fsPath}.`);
 }
 
 // This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
