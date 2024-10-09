@@ -14,7 +14,14 @@
     "workspaceContains:[Rr][Ee][Aa][Dd][Mm][Ee]"
   ],
   "main": "./out/extension.js",
-  "contributes": {},
+  "contributes": {
+    "commands": [
+      {
+        "command": "readmeAutoOpen.resetState",
+        "title": "Readme Auto Open: Reset State"
+      }
+    ]
+  },
   "scripts": {
     "vscode:prepublish": "npm run compile",
     "compile": "tsc -p ./",
