@@ -2,7 +2,7 @@
 
 A VSCode plug-in that automatically opens the project's README when you open a project for the first time, ensuring people read it. Once opened, this plug-in will not activate again until you reset the state.
 
-![An image of a README](https://media.githubusercontent.com/media/sander1095/vscode-readme-auto-open/add-readme/resources/readme-dark.png)
+![An image of a README](https://media.githubusercontent.com/media/sander1095/vscode-readme-auto-open/main/resources/readme-dark.png)
 
 ## Why should you use this?
 A (good) README is critical for understanding how to use a project, and this extension ensures that it's the first thing people see when they open a project.
