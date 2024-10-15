@@ -20,11 +20,20 @@
   "bugs": {
     "url": "https://github.com/sander1095/vscode-readme-auto-open/issues"
   },
+  "sponsor": {
+    "url": "https://github.com/sponsors/sander1095"
+  },
   "pricing": "Free",
   "license": "MIT",
   "engines": {
     "vscode": "^1.94.0"
   },
+  "keywords": [
+    "readme",
+    "documentation",
+    "teams",
+    "team"
+  ],
   "activationEvents": [
     "workspaceContains:[Rr][Ee][Aa][Dd][Mm][Ee].*",
     "workspaceContains:[Rr][Ee][Aa][Dd][Mm][Ee]"
