@@ -3,12 +3,26 @@
   "displayName": "Readme Auto Open",
   "description": "A VSCode plug-in that automatically opens the README when you open a project for the first time, ensuring people read it",
   "version": "1.0.0",
+  "publisher": "sandertenbrinke",
+  "author": {
+    "name": "Sander ten Brinke"
+  },
+  "categories": [ "Other" ],
+  "readme": "./README.md",
+  "icon": "resources/icon.png",
+  "homepage": "https://github.com/sander1095/vscode-readme-auto-open",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sander1095/vscode-readme-auto-open"
+  },
+  "bugs": {
+    "url": "https://github.com/sander1095/vscode-readme-auto-open/issues"
+  },
+  "pricing": "Free",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.94.0"
   },
-  "categories": [
-    "Other"
-  ],
   "activationEvents": [
     "workspaceContains:[Rr][Ee][Aa][Dd][Mm][Ee].*",
     "workspaceContains:[Rr][Ee][Aa][Dd][Mm][Ee]"
