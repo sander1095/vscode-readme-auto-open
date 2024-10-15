@@ -4,9 +4,7 @@
   "description": "A VSCode plug-in that automatically opens the README when you open a project for the first time, ensuring people read it",
   "version": "1.0.0",
   "publisher": "sandertenbrinke",
-  "author": {
-    "name": "Sander ten Brinke"
-  },
+  "author": "Sander ten Brinke",
   "categories": [
     "Other"
   ],
