@@ -14,7 +14,7 @@ export async function activate(context: vscode.ExtensionContext) {
   }
 
   // We grab all the files in the root instead of using the glob-pattern to search for a README file.
-  // The reason is that glob pattern searching doesn't support support case-insensitive search, so it's easier to use a regex instead.
+  // The reason is that glob pattern searching doesn't support case-insensitive search, so it's easier to use a regex instead.
   const allFilesInRootDirectory = await vscode.workspace.findFiles('*');
 
   // To prevent false positives when a PATH contains the word "readme" we only consider the file name for the search.
