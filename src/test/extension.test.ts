@@ -40,6 +40,7 @@ suite('Extension Test Suite', () => {
 
     const markdownFiles = [
       vscode.Uri.file('README.md'),
+      vscode.Uri.file('README.MD'),
       vscode.Uri.file('readme.MD'),
       vscode.Uri.file('reAdMe.mD'),
       vscode.Uri.file('reAdMe.test.md'),
@@ -81,6 +82,22 @@ suite('Extension Test Suite', () => {
         assert.strictEqual(executeCommandStub.called, false);
         assert.strictEqual(showTextDocumentStub.calledWith(uri), true);
       });
+    });
+  });
+
+  suite('README file fails to open', () => {
+    test(`Markdown README file fails to open in preview mode and falls back to editor`, async () => {
+      // Arrange
+      const uri = vscode.Uri.file('README.MD');
+      findFilesStub.resolves([uri]);
+      executeCommandStub.rejects(new Error('Failed to open in preview mode'));
+
+      // Act
+      await readmeAutoOpen.activate(context);
+
+      // Assert
+      assert.strictEqual(executeCommandStub.calledWith('markdown.showPreview', uri), true);
+      assert.strictEqual(showTextDocumentStub.calledWith(uri), true);
     });
   });
 
