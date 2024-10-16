@@ -17,29 +17,25 @@ export async function activate(context: vscode.ExtensionContext) {
   // The reason is that glob pattern searching doesn't support support case-insensitive search, so it's easier to use a regex instead.
   const allFilesInRootDirectory = await vscode.workspace.findFiles('*');
 
-  // To prevent false positives when a PATH contains the word "readme" we only consider the file name.
+  // To prevent false positives when a PATH contains the word "readme" we only consider the file name for the search.
+  // We lowercase the file name to make the search case-insensitive.
   const allFileNamesWithUri = allFilesInRootDirectory.map(p => {
-    const fileName = p.fsPath.split(/[\\/]/).pop();
+    const fileName = p?.fsPath?.split(/[\\/]/)?.pop()?.toLowerCase();
     return { uri: p, fileName: fileName };
   });
 
-  const readme = allFileNamesWithUri.find(file => file.fileName?.match(/^readme(\..+)?$/i));
+  // We support both README files with and without extensions.
+  // Perhaps a regex would be better, but this is simpler.
+  const readme = allFileNamesWithUri.find(file => file.fileName?.endsWith('readme') || file.fileName?.startsWith('readme.',));
 
   if (!readme || !readme.fileName) {
-    console.log('README was not found.');
+    console.log('Readme Auto Open: README was not found.');
     return;
   }
 
   const readmeCanBePreviewed = readme.fileName.endsWith('.md');
   if (readmeCanBePreviewed) {
-    console.log('Readme Auto Open: Attempting to open README in preview mode.');
-
-    try {
-      await vscode.commands.executeCommand('markdown.showPreview', readme);
-    } catch (error) {
-      console.error('Readme Auto Open: Error opening README in preview mode. It will be opened in the editor instead', error);
-      await openReadmeInEditor(readme.uri);
-    }
+    await openReadmeInPreviewWindow(readme.uri);
   } else {
     await openReadmeInEditor(readme.uri);
   }
@@ -53,6 +49,17 @@ export async function activate(context: vscode.ExtensionContext) {
 async function openReadmeInEditor(readme: vscode.Uri) {
   console.log('Readme Auto Open: Opening README in text editor.');
   await vscode.window.showTextDocument(readme);
+}
+
+async function openReadmeInPreviewWindow(readme: vscode.Uri) {
+  console.log('Readme Auto Open: Attempting to open README in preview mode.');
+
+  try {
+    await vscode.commands.executeCommand('markdown.showPreview', readme);
+  } catch (error) {
+    console.error('Readme Auto Open: Error opening README in preview mode. It will be opened in the editor instead');
+    await openReadmeInEditor(readme);
+  }
 }
 
 function registerResetStateCommand(context: vscode.ExtensionContext) {
