@@ -21,7 +21,7 @@ suite('Extension Test Suite', () => {
       subscriptions: []
     } as unknown as vscode.ExtensionContext;
 
-    findFilesStub = sinon.stub(vscode.workspace, 'findFiles');
+    findFilesStub = sinon.stub(vscode.workspace, 'findFiles').resolves([]);
     showTextDocumentStub = sinon.stub(vscode.window, 'showTextDocument').resolves();
     executeCommandStub = sinon.stub(vscode.commands, 'executeCommand').resolves();
     registerCommandStub = sinon.stub(vscode.commands, 'registerCommand').callsFake((command, callback) => {
@@ -115,10 +115,26 @@ suite('Extension Test Suite', () => {
     });
   });
 
+  // Test that the code isnt executed if readme is already seen
+  suite('User has already seen README', () => {
+    test('Nothing happens', async () => {
+      // Arrange
+      const uri = vscode.Uri.file('README.MD');
+      findFilesStub.resolves([uri]);
+      context.workspaceState.get = sinon.stub().returns(true);
+
+      // Act
+      await readmeAutoOpen.activate(context);
+
+      // Assert
+      assert.strictEqual(executeCommandStub.called, false);
+      assert.strictEqual(showTextDocumentStub.called, false);
+    });
+  });
+
   suite('Registering commands', () => {
     test('Reset command gets registered', async () => {
       // Arrange
-      findFilesStub.resolves([]);
 
       // Act
       await readmeAutoOpen.activate(context);
