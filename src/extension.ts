@@ -26,7 +26,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
   // We support both README files with and without extensions.
   // Perhaps a regex would be better, but this is simpler.
-  const readme = allFileNamesWithUri.find(file => file.fileName?.endsWith('readme') || file.fileName?.startsWith('readme.',));
+  const readme = allFileNamesWithUri.find(file => file.fileName?.endsWith('readme') || file.fileName?.startsWith('readme.'));
 
   if (!readme || !readme.fileName) {
     console.log('Readme Auto Open: README was not found.');
